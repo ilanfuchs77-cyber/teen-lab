@@ -22,6 +22,8 @@ import {
 } from 'lucide-react'
 import { LaunchTask, BusinessPlan } from '../../types'
 import { IDEAS } from '../../data/ideas'
+import { useAIProvider } from '../../context/AIProviderContext'
+import { thinkingLabel } from '../../lib/ai'
 
 const STORAGE_KEY = 'teen-app-lab-tasks'
 
@@ -154,6 +156,7 @@ function TaskList({ category, tasks, onToggle, onDelete, onAdd }: {
 // ─── BusinessPlanPanel ───────────────────────────────────────────────────────
 
 function BusinessPlanPanel({ idea }: { idea: ActiveIdea | null }) {
+  const { provider } = useAIProvider()
   const [plan, setPlan] = useState<BusinessPlan | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -167,7 +170,7 @@ function BusinessPlanPanel({ idea }: { idea: ActiveIdea | null }) {
       const res = await fetch('/api/launch-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idea }),
+        body: JSON.stringify({ idea, aiProvider: provider }),
       })
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Server error ${res.status}`)
       setPlan(await res.json())
@@ -195,7 +198,7 @@ function BusinessPlanPanel({ idea }: { idea: ActiveIdea | null }) {
           }`}
         >
           {loading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-          {loading ? 'Building...' : 'Build Plan'}
+          {loading ? `${thinkingLabel(provider)} is thinking...` : 'Build Plan'}
         </button>
       </div>
 
@@ -255,6 +258,7 @@ function BusinessPlanPanel({ idea }: { idea: ActiveIdea | null }) {
 // ─── CodegenPanel ─────────────────────────────────────────────────────────────
 
 function CodegenPanel({ idea }: { idea: ActiveIdea | null }) {
+  const { provider } = useAIProvider()
   const [mode, setMode] = useState<'nocode' | 'dev'>('nocode')
   const [prompt, setPrompt] = useState('')
   const [loading, setLoading] = useState(false)
@@ -270,7 +274,7 @@ function CodegenPanel({ idea }: { idea: ActiveIdea | null }) {
       const res = await fetch('/api/codegen-prompt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idea, mode }),
+        body: JSON.stringify({ idea, mode, aiProvider: provider }),
       })
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Server error ${res.status}`)
       setPrompt((await res.json()).prompt)

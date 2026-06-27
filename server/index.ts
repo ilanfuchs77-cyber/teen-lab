@@ -6,6 +6,7 @@ import { generateIdeasRouter } from './routes/generateIdeas'
 import { launchPlanRouter } from './routes/launchPlan'
 import { codegenPromptRouter } from './routes/codegenPrompt'
 import { improveIdeaRouter } from './routes/improveIdea'
+import { configuredProviders } from './ai/provider'
 
 export function createApp() {
   const app = express()
@@ -20,6 +21,12 @@ export function createApp() {
 
   app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', geminiKeySet: !!process.env.GEMINI_API_KEY })
+  })
+
+  // Which AI providers have an API key configured. Exposes only booleans (the
+  // provider ids), never the keys — lets the UI show Connected vs Demo.
+  app.get('/api/ai-providers', (_req, res) => {
+    res.json({ configured: configuredProviders() })
   })
 
   // In the packaged desktop app, this same server also serves the built

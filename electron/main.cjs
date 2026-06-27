@@ -16,12 +16,18 @@ const { startServer } = require(path.join(__dirname, '..', 'build', 'server.cjs'
 let mainWindow = null
 
 function createWindow(port) {
+  // On Windows 11 (build 22000+), enable Acrylic material so the window
+  // frame picks up the desktop colour and reinforces the Liquid Glass theme.
+  const isWin11 = process.platform === 'win32' &&
+    parseInt((require('os').release() || '0').split('.')[2] || '0', 10) >= 22000
+
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
     minWidth: 900,
     minHeight: 600,
-    backgroundColor: '#020617',
+    backgroundColor: isWin11 ? '#00050818' : '#050818',
+    ...(isWin11 ? { backgroundMaterial: 'acrylic' } : {}),
     title: 'Teen Lab',
     autoHideMenuBar: true,
     webPreferences: {

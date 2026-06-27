@@ -1,15 +1,7 @@
 import { Router, Request, Response } from 'express'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { resolveProvider, generateJSON } from '../ai/provider'
 
 export const generateIdeasRouter = Router()
-
-let genAI: GoogleGenerativeAI | null = null
-function getGenAI() {
-  if (!genAI && process.env.GEMINI_API_KEY) {
-    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-  }
-  return genAI
-}
 
 interface MockIdea {
   title: string
@@ -187,10 +179,10 @@ function buildMockIdeas(
 }
 
 generateIdeasRouter.post('/', async (req: Request, res: Response) => {
-  const { skills, interests, timeCommitment, hasCodingKnowledge, monetizationModel } = req.body
+  const { skills, interests, timeCommitment, hasCodingKnowledge, monetizationModel, aiProvider } = req.body
 
-  const ai = getGenAI()
-  if (!ai) {
+  const provider = resolveProvider(aiProvider)
+  if (!provider) {
     const ideas = buildMockIdeas(
       skills ?? [],
       interests ?? [],
@@ -236,15 +228,10 @@ Return ONLY a valid JSON object in this exact format (no markdown, no backticks,
 }`
 
   try {
-    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' })
-    const result = await model.generateContent(prompt)
-    const text = result.response.text().trim()
-
-    const clean = text.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim()
-    const parsed = JSON.parse(clean)
+    const parsed = await generateJSON(provider, prompt)
     return res.json(parsed)
   } catch (err) {
-    console.error('Gemini error:', err)
-    return res.status(500).json({ error: 'AI generation failed. Make sure your GEMINI_API_KEY is valid.' })
+    console.error('AI error:', err)
+    return res.status(500).json({ error: 'AI request failed. Make sure your AI provider key is valid.' })
   }
 })

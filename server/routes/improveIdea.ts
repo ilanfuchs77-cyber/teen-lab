@@ -1,23 +1,15 @@
 import { Router, Request, Response } from 'express'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { resolveProvider, generateJSON } from '../ai/provider'
 
 export const improveIdeaRouter = Router()
 
-let genAI: GoogleGenerativeAI | null = null
-function getGenAI() {
-  if (!genAI && process.env.GEMINI_API_KEY) {
-    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-  }
-  return genAI
-}
-
 improveIdeaRouter.post('/', async (req: Request, res: Response) => {
-  const { ideaText } = req.body
+  const { ideaText, aiProvider } = req.body
   if (!ideaText || ideaText.trim().length < 5) {
     return res.status(400).json({ error: 'Please describe your idea in a bit more detail.' })
   }
 
-  const ai = getGenAI()
+  const provider = resolveProvider(aiProvider)
 
   const prompt = `You are a startup mentor helping a teenager turn a rough idea into a polished, actionable micro-SaaS concept.
 
@@ -44,7 +36,7 @@ Return ONLY a valid JSON object (no markdown, no backticks):
   "improvements": "2-3 sentence explanation of what you improved from their original idea and why"
 }`
 
-  if (!ai) {
+  if (!provider) {
     // Rich mock improvement so the feature still works without an API key
     return res.json({
       title: 'PolishedIdea Pro',
@@ -61,13 +53,10 @@ Return ONLY a valid JSON object (no markdown, no backticks):
   }
 
   try {
-    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' })
-    const result = await model.generateContent(prompt)
-    const text = result.response.text().trim()
-    const clean = text.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim()
-    return res.json(JSON.parse(clean))
+    const parsed = await generateJSON(provider, prompt)
+    return res.json(parsed)
   } catch (err) {
-    console.error('Gemini error:', err)
-    return res.status(500).json({ error: 'AI generation failed. Check your GEMINI_API_KEY.' })
+    console.error('AI error:', err)
+    return res.status(500).json({ error: 'AI request failed. Check your API key.' })
   }
 })

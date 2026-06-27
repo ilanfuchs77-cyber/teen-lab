@@ -1,15 +1,7 @@
 import { Router, Request, Response } from 'express'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { resolveProvider, generateText } from '../ai/provider'
 
 export const codegenPromptRouter = Router()
-
-let genAI: GoogleGenerativeAI | null = null
-function getGenAI() {
-  if (!genAI && process.env.GEMINI_API_KEY) {
-    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-  }
-  return genAI
-}
 
 const MOCK_NOCODE_PROMPT = (title: string, desc: string) => `
 Build me a complete, polished web app called "${title}".
@@ -81,13 +73,13 @@ Start with the complete file structure, then implement each file with full code.
 `.trim()
 
 codegenPromptRouter.post('/', async (req: Request, res: Response) => {
-  const { idea, mode } = req.body
+  const { idea, mode, aiProvider } = req.body
   if (!idea?.title) {
     return res.status(400).json({ error: 'Missing idea data' })
   }
 
-  const ai = getGenAI()
-  if (!ai) {
+  const provider = resolveProvider(aiProvider)
+  if (!provider) {
     const mockPrompt = mode === 'dev'
       ? MOCK_DEV_PROMPT(idea.title, idea.description, idea.techStack ?? [])
       : MOCK_NOCODE_PROMPT(idea.title, idea.description)
@@ -127,12 +119,10 @@ Description: "${idea.description}"
 Return ONLY the raw prompt text — no JSON, no markdown headers, just the prompt itself.`
 
   try {
-    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' })
-    const result = await model.generateContent(systemPrompt)
-    const text = result.response.text().trim()
+    const text = await generateText(provider, systemPrompt)
     return res.json({ prompt: text })
   } catch (err) {
-    console.error('Gemini error:', err)
-    return res.status(500).json({ error: 'Failed to generate prompt. Check your GEMINI_API_KEY.' })
+    console.error('AI error:', err)
+    return res.status(500).json({ error: 'AI request failed. Failed to generate prompt.' })
   }
 })

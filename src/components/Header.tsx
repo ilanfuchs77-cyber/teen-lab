@@ -1,5 +1,6 @@
-import { Rocket, Sparkles } from 'lucide-react'
+import { Rocket } from 'lucide-react'
 import { motion } from 'motion/react'
+import AIProviderSelector from './AIProviderSelector'
 
 export default function Header() {
   return (
@@ -42,10 +43,7 @@ export default function Header() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="hidden sm:flex items-center gap-2 glass-chip px-3 py-1.5">
-            <Sparkles size={12} className="text-teal-300" />
-            <span className="text-xs text-white/80 font-medium">Powered by Gemini AI</span>
-          </div>
+          <AIProviderSelector />
           <div className="relative">
             <div className="w-2 h-2 rounded-full bg-teal-300 animate-pulse" />
             <div className="absolute inset-0 w-2 h-2 rounded-full bg-teal-400 blur-sm" />

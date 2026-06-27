@@ -15,6 +15,8 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { GeneratedIdea, MonetizationModel } from '../../types'
+import { useAIProvider } from '../../context/AIProviderContext'
+import { thinkingLabel } from '../../lib/ai'
 
 const SKILLS = ['Design', 'Writing', 'Basic Code', 'Video Editing', 'Marketing', 'Photography', 'Music']
 const INTERESTS = ['Gaming', 'Productivity', 'Sports', 'Art', 'Music', 'Study/School', 'Fashion', 'Fitness', 'Tech', 'Food']
@@ -140,6 +142,7 @@ function IdeaResultCard({ idea, index, onGoToPlanner, accent }: {
 // ── Polish My Idea Panel ─────────────────────────────────────────────────────
 
 function PolishIdeaPanel({ onGoToPlanner }: { onGoToPlanner: () => void }) {
+  const { provider } = useAIProvider()
   const [ideaText, setIdeaText] = useState('')
   const [result, setResult] = useState<ImprovedIdea | null>(null)
   const [loading, setLoading] = useState(false)
@@ -152,7 +155,7 @@ function PolishIdeaPanel({ onGoToPlanner }: { onGoToPlanner: () => void }) {
       const res = await fetch('/api/improve-idea', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ideaText: ideaText.trim() }),
+        body: JSON.stringify({ ideaText: ideaText.trim(), aiProvider: provider }),
       })
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Server error ${res.status}`)
       setResult(await res.json())
@@ -228,6 +231,7 @@ function PolishIdeaPanel({ onGoToPlanner }: { onGoToPlanner: () => void }) {
 interface Props { onGoToPlanner: () => void }
 
 export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
+  const { provider } = useAIProvider()
   const [skills, setSkills] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const [timeCommitment, setTimeCommitment] = useState(TIME_OPTIONS[1])
@@ -249,6 +253,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
         body: JSON.stringify({
           skills: customSkill ? [...skills, customSkill] : skills,
           interests, timeCommitment, hasCodingKnowledge, monetizationModel: monetization,
+          aiProvider: provider,
         }),
       })
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Server error ${res.status}`)
@@ -384,7 +389,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
                   : 'bg-white/8 text-white/45 cursor-not-allowed'
               }`}
             >
-              {loading ? <><Loader2 size={16} className="animate-spin" />Gemini is thinking...</> : <><Sparkles size={16} />Generate Matched Ideas</>}
+              {loading ? <><Loader2 size={16} className="animate-spin" />{thinkingLabel(provider)} is thinking...</> : <><Sparkles size={16} />Generate Matched Ideas</>}
             </button>
           </div>
         </div>
@@ -422,7 +427,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
                   <Sparkles size={24} className="text-teal-400 animate-pulse" />
                 </div>
               </div>
-              <p className="text-slate-300 font-semibold">Gemini AI is crafting your ideas...</p>
+              <p className="text-slate-300 font-semibold">{thinkingLabel(provider)} AI is crafting your ideas...</p>
               <p className="text-white/45 text-sm mt-2">Analyzing your skills and matching opportunities</p>
             </div>
           )}
