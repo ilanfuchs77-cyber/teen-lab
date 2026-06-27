@@ -50,7 +50,7 @@ function IdeaCardComponent({
       className={`card-base cursor-pointer transition-all duration-300 overflow-hidden ${
         isSelected
           ? 'border-teal-500/60 glow-teal'
-          : 'hover:border-slate-700'
+          : 'hover:border-white/12'
       }`}
     >
       <div className="p-5">
@@ -66,7 +66,7 @@ function IdeaCardComponent({
             {isSelected ? (
               <ChevronUp size={16} className="text-teal-400 mt-1" />
             ) : (
-              <ChevronDown size={16} className="text-slate-500 mt-1" />
+              <ChevronDown size={16} className="text-white/45 mt-1" />
             )}
           </div>
         </div>
@@ -89,20 +89,20 @@ function IdeaCardComponent({
         </div>
 
         <div className="grid grid-cols-3 gap-2">
-          <div className="bg-slate-800/50 rounded-lg p-2 text-center">
+          <div className="bg-white/8 rounded-lg p-2 text-center">
             <DollarSign size={12} className="text-teal-400 mx-auto mb-1" />
             <div className="font-mono text-xs font-bold text-slate-200">{idea.startupCost}</div>
-            <div className="text-slate-500 text-xs">Startup</div>
+            <div className="text-white/45 text-xs">Startup</div>
           </div>
-          <div className="bg-slate-800/50 rounded-lg p-2 text-center">
+          <div className="bg-white/8 rounded-lg p-2 text-center">
             <Clock size={12} className="text-purple-400 mx-auto mb-1" />
             <div className="font-mono text-xs font-bold text-slate-200">{idea.timeToLaunch}</div>
-            <div className="text-slate-500 text-xs">Launch</div>
+            <div className="text-white/45 text-xs">Launch</div>
           </div>
-          <div className="bg-slate-800/50 rounded-lg p-2 text-center">
+          <div className="bg-white/8 rounded-lg p-2 text-center">
             <Zap size={12} className="text-indigo-400 mx-auto mb-1" />
             <div className="font-mono text-xs font-bold text-teal-400">{idea.potentialMonthly}</div>
-            <div className="text-slate-500 text-xs">/mo earn</div>
+            <div className="text-white/45 text-xs">/mo earn</div>
           </div>
         </div>
 
@@ -110,7 +110,7 @@ function IdeaCardComponent({
           {idea.techStack.map((tech) => (
             <span
               key={tech}
-              className="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono border border-slate-700"
+              className="text-xs bg-white/8 text-slate-400 px-2 py-0.5 rounded font-mono border border-white/12"
             >
               {tech}
             </span>
@@ -130,7 +130,7 @@ function IdeaDetail({ idea, onGoToPlanner }: { idea: IdeaCard; onGoToPlanner: ()
       transition={{ duration: 0.3 }}
       className="mt-6 card-base border-teal-500/30 glow-teal overflow-hidden"
     >
-      <div className="bg-gradient-to-r from-teal-500/10 via-indigo-500/5 to-transparent p-5 border-b border-slate-800">
+      <div className="bg-gradient-to-r from-teal-500/10 via-indigo-500/5 to-transparent p-5 border-b border-white/10">
         <div className="flex items-center gap-3">
           <span className="text-4xl">{idea.icon}</span>
           <div>

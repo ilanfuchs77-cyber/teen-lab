@@ -56,7 +56,7 @@ function NumberInput({
             const v = parseFloat(e.target.value)
             if (!isNaN(v) && v >= (min ?? 0)) onChange(v)
           }}
-          className={`w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm font-mono font-bold ${textColor} focus:outline-none focus:ring-2 transition-colors ${ringColor} [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+          className={`w-full bg-white/8 border border-white/12 rounded-lg px-3 py-2 text-sm font-mono font-bold ${textColor} focus:outline-none focus:ring-2 transition-colors ${ringColor} [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
         />
         {suffix && <span className={`text-sm font-mono font-bold ${textColor}`}>{suffix}</span>}
       </div>
@@ -94,7 +94,7 @@ function MetricCard({
         <span className="text-xs text-slate-400 font-medium">{label}</span>
       </div>
       <div className={`font-mono font-bold ${c.text} truncate text-xl leading-tight`}>{value}</div>
-      {sub && <div className="text-xs text-slate-500 mt-1 truncate">{sub}</div>}
+      {sub && <div className="text-xs text-white/45 mt-1 truncate">{sub}</div>}
     </motion.div>
   )
 }
@@ -127,7 +127,7 @@ const CustomTooltip = ({ active, payload, label }: {
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-xl">
+      <div className="bg-white/5 border border-white/12 rounded-lg p-3 shadow-xl">
         <p className="text-slate-400 text-xs mb-2 font-medium">{label}</p>
         {payload.map((p) => (
           <p key={p.name} className="text-sm font-mono font-bold" style={{ color: p.color }}>
@@ -223,7 +223,7 @@ export default function MoneySimulatorTab() {
             </div>
           </div>
 
-          <div className="border-t border-slate-800 pt-6">
+          <div className="border-t border-white/10 pt-6">
             <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-5">
               Revenue Streams
             </h3>
@@ -238,7 +238,7 @@ export default function MoneySimulatorTab() {
                   <button
                     onClick={() => setAdsEnabled(!adsEnabled)}
                     className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
-                      adsEnabled ? 'bg-teal-500' : 'bg-slate-700'
+                      adsEnabled ? 'bg-teal-500' : 'bg-white/10'
                     }`}
                   >
                     <span
@@ -271,7 +271,7 @@ export default function MoneySimulatorTab() {
                   <button
                     onClick={() => setPremiumEnabled(!premiumEnabled)}
                     className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
-                      premiumEnabled ? 'bg-purple-500' : 'bg-slate-700'
+                      premiumEnabled ? 'bg-purple-500' : 'bg-white/10'
                     }`}
                   >
                     <span
@@ -348,7 +348,7 @@ export default function MoneySimulatorTab() {
             <h3 className="text-sm font-semibold text-slate-300 mb-1">
               12-Month Revenue Projection
             </h3>
-            <p className="text-xs text-slate-500 mb-5">
+            <p className="text-xs text-white/45 mb-5">
               Assumes ~22% monthly user growth as your app gains traction
             </p>
             <ResponsiveContainer width="100%" height={280}>

@@ -85,10 +85,10 @@ function TaskList({ category, tasks, onToggle, onDelete, onAdd }: {
         <div className="flex items-center gap-2">
           <Icon size={14} className={meta.color} />
           <span className={`font-semibold text-sm ${meta.color}`}>{category}</span>
-          <span className="text-xs text-slate-500 font-normal">{done}/{tasks.length} done</span>
+          <span className="text-xs text-white/45 font-normal">{done}/{tasks.length} done</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-16 h-1.5 bg-white/8 rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-500 ${meta.bar}`}
               style={{ width: tasks.length ? `${(done / tasks.length) * 100}%` : '0%' }}
@@ -114,12 +114,12 @@ function TaskList({ category, tasks, onToggle, onDelete, onAdd }: {
                   <button onClick={() => onToggle(task.id)} className="mt-0.5 flex-shrink-0 transition-transform hover:scale-110">
                     {task.completed
                       ? <CheckCircle2 size={16} className="text-teal-500" />
-                      : <Circle size={16} className="text-slate-600 group-hover:text-slate-400" />}
+                      : <Circle size={16} className="text-white/35 group-hover:text-slate-400" />}
                   </button>
-                  <span className={`flex-1 text-sm leading-relaxed transition-colors ${task.completed ? 'text-slate-500 line-through' : 'text-slate-300'}`}>
+                  <span className={`flex-1 text-sm leading-relaxed transition-colors ${task.completed ? 'text-white/45 line-through' : 'text-slate-300'}`}>
                     {task.task}
                   </span>
-                  <button onClick={() => onDelete(task.id)} className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-600 hover:text-red-400">
+                  <button onClick={() => onDelete(task.id)} className="opacity-0 group-hover:opacity-100 transition-opacity text-white/35 hover:text-red-400">
                     <Trash2 size={13} />
                   </button>
                 </div>
@@ -134,11 +134,11 @@ function TaskList({ category, tasks, onToggle, onDelete, onAdd }: {
                     if (e.key === 'Enter' && newTask.trim()) { onAdd(newTask.trim()); setNewTask('') }
                   }}
                   placeholder={`Add ${category} task...`}
-                  className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-teal-500/50 transition-colors"
+                  className="flex-1 bg-white/8 border border-white/12 rounded-lg px-3 py-1.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-teal-500/50 transition-colors"
                 />
                 <button
                   onClick={() => { if (newTask.trim()) { onAdd(newTask.trim()); setNewTask('') } }}
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-700 hover:bg-teal-500/20 transition-colors"
+                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 hover:bg-teal-500/20 transition-colors"
                 >
                   <Plus size={14} className="text-slate-400" />
                 </button>
@@ -191,7 +191,7 @@ function BusinessPlanPanel({ idea }: { idea: ActiveIdea | null }) {
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
             idea && !loading
               ? 'bg-gradient-to-r from-teal-500 to-indigo-600 text-white hover:opacity-90'
-              : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+              : 'bg-white/8 text-white/45 cursor-not-allowed'
           }`}
         >
           {loading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
@@ -199,7 +199,7 @@ function BusinessPlanPanel({ idea }: { idea: ActiveIdea | null }) {
         </button>
       </div>
 
-      {!idea && <p className="text-xs text-slate-500 mb-3">Select or describe an idea above to generate your plan.</p>}
+      {!idea && <p className="text-xs text-white/45 mb-3">Select or describe an idea above to generate your plan.</p>}
 
       <AnimatePresence>
         {error && (
@@ -233,11 +233,11 @@ function BusinessPlanPanel({ idea }: { idea: ActiveIdea | null }) {
             </div>
           ))}
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-slate-800/50 rounded-lg p-3">
+            <div className="bg-white/8 rounded-lg p-3">
               <div className="text-xs text-slate-400 mb-1">👥 Target Audience</div>
               <div className="text-sm text-slate-200">{plan.targetAudience}</div>
             </div>
-            <div className="bg-slate-800/50 rounded-lg p-3">
+            <div className="bg-white/8 rounded-lg p-3">
               <div className="text-xs text-slate-400 mb-1">💡 Unique Value Prop</div>
               <div className="text-sm text-slate-200">{plan.uvp}</div>
             </div>
@@ -308,7 +308,7 @@ function CodegenPanel({ idea }: { idea: ActiveIdea | null }) {
             className={`flex-1 px-3 py-2 rounded-lg border text-sm transition-all ${
               mode === m.value
                 ? 'bg-purple-500/15 border-purple-500/50 text-purple-200'
-                : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-purple-500/30'
+                : 'bg-white/8 border-white/12 text-slate-400 hover:border-purple-500/30'
             }`}
           >
             <div className="font-semibold">{m.label}</div>
@@ -324,7 +324,7 @@ function CodegenPanel({ idea }: { idea: ActiveIdea | null }) {
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
             idea && !loading
               ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:opacity-90'
-              : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+              : 'bg-white/8 text-white/45 cursor-not-allowed'
           }`}
         >
           {loading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
@@ -332,7 +332,7 @@ function CodegenPanel({ idea }: { idea: ActiveIdea | null }) {
         </button>
       </div>
 
-      {!idea && <p className="text-xs text-slate-500 mb-3">Select or describe an idea above first.</p>}
+      {!idea && <p className="text-xs text-white/45 mb-3">Select or describe an idea above first.</p>}
 
       <AnimatePresence>
         {error && (
@@ -350,17 +350,17 @@ function CodegenPanel({ idea }: { idea: ActiveIdea | null }) {
             <div className="absolute top-2 right-2">
               <button
                 onClick={copyPrompt}
-                className="flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 px-2.5 py-1.5 rounded-lg text-xs text-slate-300 transition-colors"
+                className="flex items-center gap-1.5 bg-white/10 hover:bg-white/15 px-2.5 py-1.5 rounded-lg text-xs text-slate-300 transition-colors"
               >
                 {copied ? <Check size={12} className="text-teal-400" /> : <Copy size={12} />}
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
-            <pre className="bg-slate-800 border border-slate-700 rounded-xl p-4 text-xs text-slate-300 font-mono whitespace-pre-wrap overflow-auto max-h-80 leading-relaxed pt-10">
+            <pre className="bg-white/8 border border-white/12 rounded-xl p-4 text-xs text-slate-300 font-mono whitespace-pre-wrap overflow-auto max-h-80 leading-relaxed pt-10">
               {prompt}
             </pre>
           </div>
-          <p className="text-xs text-slate-500 mt-2">
+          <p className="text-xs text-white/45 mt-2">
             Paste into {mode === 'nocode' ? 'v0.dev, bolt.new, or lovable.dev' : 'ChatGPT or Claude'} to generate your app.
           </p>
         </motion.div>
@@ -430,17 +430,17 @@ export default function LaunchPlannerTab({ selectedIdeaId: initialIdeaId }: Prop
           </div>
           <div className="flex-shrink-0 text-right">
             <div className="font-mono text-3xl font-bold text-gradient-teal">{overallPct}%</div>
-            <div className="text-xs text-slate-500">{totalDone}/{totalTasks} tasks done</div>
+            <div className="text-xs text-white/45">{totalDone}/{totalTasks} tasks done</div>
           </div>
         </div>
 
         {/* ── Idea Picker ─────────────────────────────────────────────────── */}
-        <div className="bg-slate-900 border border-slate-700 rounded-xl p-4 mb-5">
+        <div className="bg-white/5 border border-white/12 rounded-xl p-4 mb-5">
           <div className="flex items-center gap-2 mb-3">
             <Rocket size={14} className="text-teal-400" />
             <span className="text-sm font-semibold text-slate-300">Which idea are you building?</span>
             {activeIdeaId && (
-              <span className="ml-auto text-xs text-slate-500">Click again to deselect</span>
+              <span className="ml-auto text-xs text-white/45">Click again to deselect</span>
             )}
           </div>
 
@@ -460,7 +460,7 @@ export default function LaunchPlannerTab({ selectedIdeaId: initialIdeaId }: Prop
                   className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-left transition-all duration-150 ${
                     isActive
                       ? 'bg-teal-500/15 border-teal-500/50 text-teal-200 glow-teal'
-                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600 hover:text-slate-200'
+                      : 'bg-white/8 border-white/12 text-slate-400 hover:border-white/25 hover:text-slate-200'
                   }`}
                 >
                   <span className="text-lg flex-shrink-0">{idea.icon}</span>
@@ -487,7 +487,7 @@ export default function LaunchPlannerTab({ selectedIdeaId: initialIdeaId }: Prop
                 if (e.target.value.trim()) setActiveIdeaId('') // deselect curated when typing
               }}
               placeholder="e.g. A browser extension that tracks my mood while I study and gives me Spotify playlist suggestions..."
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500/50 transition-colors resize-none leading-relaxed"
+              className="w-full bg-white/8 border border-white/12 rounded-lg px-3 py-2.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500/50 transition-colors resize-none leading-relaxed"
             />
             {customIdeaText.trim().length > 0 && customIdeaText.trim().length <= 3 && (
               <p className="text-xs text-amber-400/80 mt-1">Keep typing — describe it a bit more for better AI results.</p>
@@ -512,7 +512,7 @@ export default function LaunchPlannerTab({ selectedIdeaId: initialIdeaId }: Prop
         </div>
 
         {/* Overall Progress Bar */}
-        <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-white/8 rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-gradient-to-r from-teal-500 to-indigo-500 rounded-full"
             initial={{ width: 0 }}
@@ -541,7 +541,7 @@ export default function LaunchPlannerTab({ selectedIdeaId: initialIdeaId }: Prop
           ))}
           <button
             onClick={() => { if (confirm('Reset checklist to defaults? This will clear all progress.')) persist(DEFAULT_TASKS) }}
-            className="text-xs text-slate-600 hover:text-slate-400 transition-colors"
+            className="text-xs text-white/35 hover:text-slate-400 transition-colors"
           >
             Reset to defaults
           </button>

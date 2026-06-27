@@ -19,28 +19,27 @@ export default function App() {
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null)
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen text-slate-100 flex flex-col relative">
       <Header />
 
-      {/* Tab Navigation */}
-      <div className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 py-3">
-          <div className="flex gap-2 bg-slate-900 rounded-xl p-1 w-fit">
+      {/* Glass tab navigation — floating */}
+      <div className="sticky top-0 z-40 px-4 pt-3 pb-3">
+        <div className="max-w-7xl mx-auto">
+          <div className="glass glass-highlight inline-flex p-1.5 gap-1" style={{ borderRadius: '18px' }}>
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? 'text-slate-950'
-                    : 'text-slate-400 hover:text-slate-200'
+                className={`relative px-4 py-2 text-sm font-semibold transition-colors duration-200 flex items-center gap-2 whitespace-nowrap rounded-xl ${
+                  activeTab === tab.id ? 'text-white' : 'text-white/55 hover:text-white/90'
                 }`}
               >
                 {activeTab === tab.id && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-gradient-to-r from-teal-500 to-indigo-500 rounded-lg"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+                    className="absolute inset-0 glass-btn-primary"
+                    style={{ borderRadius: '12px' }}
+                    transition={{ type: 'spring', bounce: 0.18, duration: 0.45 }}
                   />
                 )}
                 <span className="relative z-10">{tab.emoji}</span>
@@ -52,14 +51,14 @@ export default function App() {
       </div>
 
       {/* Tab Content */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
             {activeTab === 'discover' && (
               <DiscoverTab
@@ -79,9 +78,9 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      <footer className="border-t border-slate-800 py-6 text-center text-slate-600 text-sm">
+      <footer className="py-8 text-center text-white/40 text-sm">
         <span className="text-gradient-teal font-semibold">Teen Lab</span>
-        {' '}· Build something real. Ship it. Earn from it. 🚀
+        {' '}· Build something real. Ship it. Earn from it.
       </footer>
     </div>
   )

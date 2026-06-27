@@ -35,9 +35,9 @@ function ToggleChip({ label, selected, onToggle, color = 'teal' }: {
   label: string; selected: boolean; onToggle: () => void; color?: 'teal' | 'purple' | 'indigo'
 }) {
   const colors = {
-    teal:   selected ? 'bg-teal-500/20 border-teal-500/60 text-teal-300'   : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-teal-500/40 hover:text-teal-400',
-    purple: selected ? 'bg-purple-500/20 border-purple-500/60 text-purple-300' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-purple-500/40 hover:text-purple-400',
-    indigo: selected ? 'bg-indigo-500/20 border-indigo-500/60 text-indigo-300' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-indigo-500/40 hover:text-indigo-400',
+    teal:   selected ? 'bg-teal-500/20 border-teal-500/60 text-teal-300'   : 'bg-white/8 border-white/12 text-slate-400 hover:border-teal-500/40 hover:text-teal-400',
+    purple: selected ? 'bg-purple-500/20 border-purple-500/60 text-purple-300' : 'bg-white/8 border-white/12 text-slate-400 hover:border-purple-500/40 hover:text-purple-400',
+    indigo: selected ? 'bg-indigo-500/20 border-indigo-500/60 text-indigo-300' : 'bg-white/8 border-white/12 text-slate-400 hover:border-indigo-500/40 hover:text-indigo-400',
   }[color]
   return (
     <button onClick={onToggle} className={`text-sm px-3 py-1.5 rounded-full border font-medium transition-all duration-150 ${colors}`}>
@@ -79,7 +79,7 @@ function IdeaResultCard({ idea, index, onGoToPlanner, accent }: {
             </div>
             <h3 className="text-lg font-bold text-slate-100">{idea.title}</h3>
           </div>
-          <span className={`font-mono text-sm font-bold ${textColors[idx]} bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 whitespace-nowrap`}>
+          <span className={`font-mono text-sm font-bold ${textColors[idx]} bg-white/8 px-2.5 py-1 rounded-lg border border-white/12 whitespace-nowrap`}>
             {idea.potentialEarnings}
           </span>
         </div>
@@ -94,19 +94,19 @@ function IdeaResultCard({ idea, index, onGoToPlanner, accent }: {
         )}
 
         <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="bg-slate-800/60 rounded-lg p-3">
+          <div className="bg-white/8 rounded-lg p-3">
             <div className="flex items-center gap-1.5 mb-1"><Target size={12} className="text-slate-400" /><span className="text-xs text-slate-400 font-medium">Target Audience</span></div>
             <p className="text-sm text-slate-200">{idea.targetAudience}</p>
           </div>
-          <div className="bg-slate-800/60 rounded-lg p-3">
+          <div className="bg-white/8 rounded-lg p-3">
             <div className="flex items-center gap-1.5 mb-1"><Clock size={12} className="text-slate-400" /><span className="text-xs text-slate-400 font-medium">Time to Launch</span></div>
             <p className="text-sm text-slate-200">{idea.timeToLaunch}</p>
           </div>
-          <div className="bg-slate-800/60 rounded-lg p-3">
+          <div className="bg-white/8 rounded-lg p-3">
             <div className="flex items-center gap-1.5 mb-1"><DollarSign size={12} className="text-slate-400" /><span className="text-xs text-slate-400 font-medium">Monetization</span></div>
             <p className="text-sm text-slate-200">{idea.monetization}</p>
           </div>
-          <div className="bg-slate-800/60 rounded-lg p-3">
+          <div className="bg-white/8 rounded-lg p-3">
             <div className="flex items-center gap-1.5 mb-1"><Zap size={12} className="text-slate-400" /><span className="text-xs text-slate-400 font-medium">Why It Works</span></div>
             <p className="text-sm text-slate-200">{idea.whyItWorks}</p>
           </div>
@@ -116,12 +116,12 @@ function IdeaResultCard({ idea, index, onGoToPlanner, accent }: {
           <div className="flex items-center gap-1.5 mb-2"><Code2 size={12} className="text-slate-400" /><span className="text-xs text-slate-400 font-medium">Tech / Tools</span></div>
           <div className="flex flex-wrap gap-1.5">
             {idea.techStack.map((tech) => (
-              <span key={tech} className="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-2 py-0.5 rounded font-mono">{tech}</span>
+              <span key={tech} className="text-xs bg-white/8 border border-white/12 text-slate-300 px-2 py-0.5 rounded font-mono">{tech}</span>
             ))}
           </div>
         </div>
 
-        <div className="bg-slate-800/40 border border-slate-700 rounded-lg p-3 mb-4">
+        <div className="bg-white/5 border border-white/12 rounded-lg p-3 mb-4">
           <div className="text-xs text-slate-400 font-medium mb-1">🚀 First Step to Take Today</div>
           <p className="text-sm text-slate-200">{idea.firstStep}</p>
         </div>
@@ -181,11 +181,11 @@ function PolishIdeaPanel({ onGoToPlanner }: { onGoToPlanner: () => void }) {
         value={ideaText}
         onChange={(e) => setIdeaText(e.target.value)}
         placeholder="e.g. An app where students can find study partners near them who are taking the same classes..."
-        className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500/60 transition-colors resize-none leading-relaxed mb-3"
+        className="w-full bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500/60 transition-colors resize-none leading-relaxed mb-3"
       />
 
       <div className="flex items-center justify-between gap-3">
-        <div className="text-xs text-slate-500">
+        <div className="text-xs text-white/45">
           {ideaText.trim().length < 5
             ? 'Describe your idea to continue'
             : `${ideaText.trim().length} chars — ready to polish ✓`}
@@ -196,7 +196,7 @@ function PolishIdeaPanel({ onGoToPlanner }: { onGoToPlanner: () => void }) {
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
             canSubmit
               ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:opacity-90 shadow-purple'
-              : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+              : 'bg-white/8 text-white/45 cursor-not-allowed'
           }`}
         >
           {loading ? <Loader2 size={15} className="animate-spin" /> : <Wand2 size={15} />}
@@ -276,16 +276,16 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
         <div className="flex items-center gap-2 mb-3">
           <PenLine size={14} className="text-purple-400" />
           <span className="text-sm font-semibold text-slate-300">Have an idea already? Let AI make it better</span>
-          <ChevronRight size={13} className="text-slate-600" />
+          <ChevronRight size={13} className="text-white/35" />
         </div>
         <PolishIdeaPanel onGoToPlanner={onGoToPlanner} />
       </div>
 
       {/* Divider */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="flex-1 h-px bg-slate-800" />
-        <span className="text-xs text-slate-600 uppercase tracking-widest font-semibold">or generate ideas from your profile</span>
-        <div className="flex-1 h-px bg-slate-800" />
+        <div className="flex-1 h-px bg-white/8" />
+        <span className="text-xs text-white/35 uppercase tracking-widest font-semibold">or generate ideas from your profile</span>
+        <div className="flex-1 h-px bg-white/8" />
       </div>
 
       {/* ── Profile-Based Generator ────────────────────────────────────── */}
@@ -296,7 +296,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
             {/* Skills */}
             <div>
               <label className="text-sm font-semibold text-slate-300 block mb-3">
-                Your Skills <span className="text-slate-500 font-normal">(pick all that apply)</span>
+                Your Skills <span className="text-white/45 font-normal">(pick all that apply)</span>
               </label>
               <div className="flex flex-wrap gap-2">
                 {SKILLS.map((s) => (
@@ -309,7 +309,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
                   value={customSkill}
                   onChange={(e) => setCustomSkill(e.target.value)}
                   placeholder="+ Add custom skill (e.g. 3D Modeling)"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="w-full bg-white/8 border border-white/12 rounded-lg px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
                 />
               </div>
             </div>
@@ -334,7 +334,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
                     className={`text-sm px-3 py-2 rounded-lg border transition-all duration-150 font-medium text-left ${
                       timeCommitment === t
                         ? 'bg-indigo-500/20 border-indigo-500/60 text-indigo-300'
-                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-indigo-500/40'
+                        : 'bg-white/8 border-white/12 text-slate-400 hover:border-indigo-500/40'
                     }`}
                   >{t}</button>
                 ))}
@@ -345,11 +345,11 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-sm font-semibold text-slate-300">I can write code</div>
-                <div className="text-xs text-slate-500">Turn off for no-code/low-code ideas</div>
+                <div className="text-xs text-white/45">Turn off for no-code/low-code ideas</div>
               </div>
               <button
                 onClick={() => setHasCodingKnowledge(!hasCodingKnowledge)}
-                className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${hasCodingKnowledge ? 'bg-teal-500' : 'bg-slate-700'}`}
+                className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${hasCodingKnowledge ? 'bg-teal-500' : 'bg-white/10'}`}
               >
                 <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${hasCodingKnowledge ? 'translate-x-6' : 'translate-x-0'}`} />
               </button>
@@ -365,7 +365,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg border text-sm transition-all duration-150 ${
                       monetization === m.value
                         ? 'bg-purple-500/15 border-purple-500/50 text-purple-200'
-                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-purple-500/30'
+                        : 'bg-white/8 border-white/12 text-slate-400 hover:border-purple-500/30'
                     }`}
                   >
                     <span>{m.emoji}</span>
@@ -381,7 +381,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
               className={`w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 ${
                 canGenerate && !loading
                   ? 'bg-gradient-to-r from-teal-500 to-indigo-600 text-white hover:opacity-90 glow-teal'
-                  : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                  : 'bg-white/8 text-white/45 cursor-not-allowed'
               }`}
             >
               {loading ? <><Loader2 size={16} className="animate-spin" />Gemini is thinking...</> : <><Sparkles size={16} />Generate Matched Ideas</>}
@@ -408,7 +408,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
             <div className="flex flex-col items-center justify-center h-80 text-center">
               <div className="text-6xl mb-4">✨</div>
               <h3 className="text-slate-300 font-semibold mb-2">Your matched ideas will appear here</h3>
-              <p className="text-slate-500 text-sm max-w-sm">
+              <p className="text-white/45 text-sm max-w-sm">
                 Select your skills and interests, then click Generate. Or use the "Polish My Idea" box above to start from your own concept.
               </p>
             </div>
@@ -423,7 +423,7 @@ export default function AIIdeaGeneratorTab({ onGoToPlanner }: Props) {
                 </div>
               </div>
               <p className="text-slate-300 font-semibold">Gemini AI is crafting your ideas...</p>
-              <p className="text-slate-500 text-sm mt-2">Analyzing your skills and matching opportunities</p>
+              <p className="text-white/45 text-sm mt-2">Analyzing your skills and matching opportunities</p>
             </div>
           )}
 
