@@ -4,3 +4,5 @@ build/
 release/
 .env
 .vercel/
+
+.vercel
