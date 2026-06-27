@@ -5,6 +5,7 @@ import DiscoverTab from './components/tabs/DiscoverTab'
 import MoneySimulatorTab from './components/tabs/MoneySimulatorTab'
 import AIIdeaGeneratorTab from './components/tabs/AIIdeaGeneratorTab'
 import LaunchPlannerTab from './components/tabs/LaunchPlannerTab'
+import InstallPrompt from './components/InstallPrompt'
 import { Tab } from './types'
 
 const TABS: { id: Tab; label: string; emoji: string }[] = [
@@ -82,6 +83,8 @@ export default function App() {
         <span className="text-gradient-teal font-semibold">Teen Lab</span>
         {' '}· Build something real. Ship it. Earn from it.
       </footer>
+
+      <InstallPrompt />
     </div>
   )
 }
