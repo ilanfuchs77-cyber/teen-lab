@@ -52,7 +52,7 @@ export function startServer(
         }
       })
       server.listen(port, () => {
-        console.log(`\n🚀 Teen App Lab running on http://localhost:${port}`)
+        console.log(`\n🚀 Teen Lab running on http://localhost:${port}`)
         if (!process.env.GEMINI_API_KEY) {
           console.warn('⚠️  GEMINI_API_KEY not set — AI endpoints will return mock data')
         } else {

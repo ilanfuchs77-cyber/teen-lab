@@ -80,7 +80,7 @@ export default function App() {
       </main>
 
       <footer className="border-t border-slate-800 py-6 text-center text-slate-600 text-sm">
-        <span className="text-gradient-teal font-semibold">Teen App Lab</span>
+        <span className="text-gradient-teal font-semibold">Teen Lab</span>
         {' '}· Build something real. Ship it. Earn from it. 🚀
       </footer>
     </div>

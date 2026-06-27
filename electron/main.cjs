@@ -22,7 +22,7 @@ function createWindow(port) {
     minWidth: 900,
     minHeight: 600,
     backgroundColor: '#020617',
-    title: 'Teen App Lab',
+    title: 'Teen Lab',
     autoHideMenuBar: true,
     webPreferences: {
       contextIsolation: true,
@@ -49,7 +49,7 @@ app.whenReady().then(async () => {
     const port = await startServer()
     createWindow(port)
   } catch (err) {
-    console.error('Failed to start Teen App Lab server:', err)
+    console.error('Failed to start Teen Lab server:', err)
     app.quit()
   }
 

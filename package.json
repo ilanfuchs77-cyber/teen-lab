@@ -18,7 +18,7 @@
   },
   "build": {
     "appId": "com.teenapplab.desktop",
-    "productName": "Teen App Lab",
+    "productName": "Teen Lab",
     "electronDist": "node_modules/electron/dist",
     "asar": false,
     "directories": {
@@ -41,7 +41,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Teen App Lab"
+      "shortcutName": "Teen Lab"
     }
   },
   "dependencies": {

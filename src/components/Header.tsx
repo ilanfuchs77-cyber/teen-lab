@@ -16,7 +16,7 @@ export default function Header() {
           </div>
           <div>
             <h1 className="text-lg font-bold tracking-tight">
-              <span className="text-gradient-teal">Teen App Lab</span>
+              <span className="text-gradient-teal">Teen Lab</span>
             </h1>
             <p className="text-xs text-slate-500 leading-none">Build · Ship · Earn</p>
           </div>
