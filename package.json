@@ -1,6 +1,8 @@
 {
   "name": "teen-app-lab",
   "version": "1.0.12-beta",
+  "description": "Discover, simulate and launch your first digital product",
+  "author": "Teen Lab",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
@@ -13,7 +15,8 @@
     "build:server": "esbuild server/index.ts --bundle --platform=node --format=cjs --packages=external --outfile=build/server.cjs",
     "build:app": "npm run build:client && npm run build:server",
     "electron": "electron .",
-    "dist": "npm run build:app && electron-builder --win",
+    "dist": "npm run build:app && electron-builder --win --target nsis",
+    "dist:store": "npm run build:app && electron-builder --win --target appx",
     "dist:dir": "npm run build:app && electron-builder --win --dir"
   },
   "build": {
@@ -32,8 +35,10 @@
     ],
     "win": {
       "target": [
-        "nsis"
-      ]
+        "nsis",
+        "appx"
+      ],
+      "publisherName": "Teen Lab"
     },
     "nsis": {
       "oneClick": false,
@@ -42,6 +47,14 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Teen Lab"
+    },
+    "appx": {
+      "displayName": "Teen Lab",
+      "publisherDisplayName": "Teen Lab",
+      "identityName": "TeenLab.App",
+      "publisher": "CN=Teen Lab",
+      "applicationId": "TeenLab",
+      "backgroundColor": "#050818"
     }
   },
   "dependencies": {
