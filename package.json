@@ -1,6 +1,6 @@
 {
   "name": "teen-app-lab",
-  "version": "1.0.0",
+  "version": "1.0.12-beta",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
