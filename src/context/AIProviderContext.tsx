@@ -20,7 +20,7 @@ const Ctx = createContext<AIProviderCtx>({
 function readStored(): AIProvider {
   if (typeof localStorage === 'undefined') return 'auto'
   const v = localStorage.getItem(STORAGE_KEY)
-  return v === 'gemini' || v === 'openai' || v === 'claude' || v === 'auto' ? v : 'auto'
+  return v === 'gemini' || v === 'openai' || v === 'claude' || v === 'ollama' || v === 'auto' ? v : 'auto'
 }
 
 export function AIProviderProvider({ children }: { children: ReactNode }) {

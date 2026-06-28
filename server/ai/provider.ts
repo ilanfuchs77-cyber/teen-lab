@@ -1,17 +1,21 @@
 /**
  * Unified AI provider layer.
  *
- * The app can be backed by Google Gemini, OpenAI, or Anthropic Claude — the
- * user picks which one in the UI, and the chosen provider id arrives on each
- * request as `aiProvider`. We talk to every provider over its plain REST API
- * with the built-in `fetch`, so no extra SDKs are needed and the same code
- * runs under tsx (dev), esbuild (desktop), and Vercel serverless.
+ * The app can be backed by Google Gemini, OpenAI, Anthropic Claude, or a local
+ * Ollama instance — the user picks which one in the UI, and the chosen provider
+ * id arrives on each request as `aiProvider`. We talk to every provider over its
+ * plain REST API with the built-in `fetch`, so no extra SDKs are needed and the
+ * same code runs under tsx (dev), esbuild (desktop), and Vercel serverless.
  *
  * If the chosen provider has no API key configured, callers fall back to their
  * existing rich mock data, so every feature keeps working with zero setup.
+ *
+ * Ollama is special: it's a local runtime with no API key, so it's always
+ * offered. Point it elsewhere with OLLAMA_HOST and pick a model with
+ * OLLAMA_MODEL (defaults: http://localhost:11434 and llama3.2).
  */
 
-export type AIProvider = 'auto' | 'gemini' | 'openai' | 'claude'
+export type AIProvider = 'auto' | 'gemini' | 'openai' | 'claude' | 'ollama'
 export type RealProvider = Exclude<AIProvider, 'auto'>
 
 export interface ProviderInfo {
@@ -22,16 +26,26 @@ export interface ProviderInfo {
   envKey: string
 }
 
+// Local Ollama server — no key required. Overridable via env.
+const OLLAMA_HOST = (process.env.OLLAMA_HOST || 'http://localhost:11434').replace(/\/+$/, '')
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3.2'
+
 export const PROVIDER_INFO: Record<RealProvider, ProviderInfo> = {
   gemini: { id: 'gemini', label: 'Gemini',  company: 'Google',    model: 'gemini-1.5-flash',        envKey: 'GEMINI_API_KEY' },
   openai: { id: 'openai', label: 'GPT',     company: 'OpenAI',    model: 'gpt-4o-mini',             envKey: 'OPENAI_API_KEY' },
   claude: { id: 'claude', label: 'Claude',  company: 'Anthropic', model: 'claude-3-5-haiku-latest', envKey: 'ANTHROPIC_API_KEY' },
+  ollama: { id: 'ollama', label: 'Ollama',  company: 'Local',     model: OLLAMA_MODEL,              envKey: 'OLLAMA_HOST' },
 }
 
-// Order used when resolving 'auto' — first one with a key wins.
+// Order used when resolving 'auto' — first one with a key wins. Ollama is left
+// out on purpose: 'auto' should never quietly depend on a local server, so
+// zero-setup users keep getting mock data instead of a connection error.
 const RESOLUTION_ORDER: RealProvider[] = ['claude', 'openai', 'gemini']
 
 export function isConfigured(p: RealProvider): boolean {
+  // Ollama has no key — it's always selectable. If it isn't actually running we
+  // surface a clear error when called rather than hiding the option here.
+  if (p === 'ollama') return true
   return !!process.env[PROVIDER_INFO[p].envKey]
 }
 
@@ -118,6 +132,48 @@ async function callClaude(model: string, prompt: string): Promise<string> {
   return data?.content?.[0]?.text ?? ''
 }
 
+// When OLLAMA_MODEL isn't set, use whatever model the user already pulled so
+// the app works out of the box. Cached after the first lookup.
+let cachedOllamaModel: string | null = null
+async function pickOllamaModel(preferred: string): Promise<string> {
+  if (process.env.OLLAMA_MODEL) return process.env.OLLAMA_MODEL
+  if (cachedOllamaModel) return cachedOllamaModel
+  try {
+    const r = await fetch(`${OLLAMA_HOST}/api/tags`)
+    if (r.ok) {
+      const first = (await r.json())?.models?.[0]?.name
+      if (first) return (cachedOllamaModel = first)
+    }
+  } catch { /* server unreachable — handled by callOllama */ }
+  return preferred
+}
+
+async function callOllama(modelHint: string, prompt: string): Promise<string> {
+  const model = await pickOllamaModel(modelHint)
+  let res: Response
+  try {
+    res = await fetch(`${OLLAMA_HOST}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model, prompt, stream: false, options: { temperature: 0.85 } }),
+    })
+  } catch {
+    throw new Error(
+      `Could not reach Ollama at ${OLLAMA_HOST}. Make sure the Ollama app is running, then run: ollama pull ${model}`
+    )
+  }
+  if (!res.ok) {
+    const body = await res.text()
+    // 404 from Ollama almost always means the model hasn't been pulled yet.
+    if (res.status === 404) throw new Error(`Ollama has no model "${model}". Run: ollama pull ${model}`)
+    throw new Error(`Ollama API ${res.status}: ${body}`)
+  }
+  const data: any = await res.json()
+  // Reasoning models (e.g. qwen3) wrap their scratch-work in <think>…</think>;
+  // strip it so JSON parsing and prompt output stay clean.
+  return (data?.response ?? '').replace(/<think>[\s\S]*?<\/think>/gi, '').trim()
+}
+
 /** Raw text completion from a specific, already-resolved provider. */
 export async function generateText(provider: RealProvider, prompt: string): Promise<string> {
   const { model } = PROVIDER_INFO[provider]
@@ -125,6 +181,7 @@ export async function generateText(provider: RealProvider, prompt: string): Prom
     case 'gemini': return callGemini(model, prompt)
     case 'openai': return callOpenAI(model, prompt)
     case 'claude': return callClaude(model, prompt)
+    case 'ollama': return callOllama(model, prompt)
   }
 }
 
